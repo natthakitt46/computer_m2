@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Logistics Challenge - สื่อการสอนแนวคิดเชิงคำนวณ ม.2</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .active-tab {
+            background-color: #0ea5e9;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -2px rgba(14, 165, 233, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-tr from-primary-600 to-secondary-600 text-white p-2..5 rounded-xl shadow-md">
+                        <i class="fa-solid fa-brain text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg sm:text-xl text-slate-900 block leading-tight">Computational Thinking</span>
+                        <span class="text-xs text-primary-600 font-medium">สื่อการเรียนรู้แบบปัญหาเป็นฐาน (PBL) ม.2</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Nav Tabs -->
+                <nav class="hidden lg:flex space-x-1" aria-label="Tabs">
+                    <button onclick="switchTab('home')" id="tab-btn-home" class="tab-btn active-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+                        <i class="fa-solid fa-house mr-1.5"></i> หน้าแรก
+                    </button>
+                    <button onclick="switchTab('resources')" id="tab-btn-resources" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> แหล่งข้อมูลเรียนรู้
+                    </button>
+                    <button onclick="switchTab('forum')" id="tab-btn-forum" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+                        <i class="fa-solid fa-comments mr-1.5"></i> แลกเปลี่ยนความคิด
+                    </button>
+                    <button onclick="switchTab('solution')" id="tab-btn-solution" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+                        <i class="fa-solid fa-lightbulb mr-1.5"></i> เสนอแนวทางแก้ปัญหา
+                    </button>
+                    <button onclick="switchTab('evaluation')" id="tab-btn-evaluation" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+                        <i class="fa-solid fa-square-check mr-1.5"></i> ประเมินตนเอง
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-600 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-100 bg-white shadow-inner">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="switchTab('home')" id="mob-btn-home" class="w-full text-left px-4 py-2.5 rounded-lg text-base font-medium text-white bg-primary-500 block">
+                    <i class="fa-solid fa-house mr-2 text-white"></i> หน้าแรก: ภารกิจและปัญหา
+                </button>
+                <button onclick="switchTab('resources')" id="mob-btn-resources" class="w-full text-left px-4 py-2.5 rounded-lg text-base font-medium text-slate-600 hover:bg-slate-50 block">
+                    <i class="fa-solid fa-book-open mr-2 text-primary-500"></i> หน้าที่ 2: แหล่งข้อมูลเรียนรู้
+                </button>
+                <button onclick="switchTab('forum')" id="mob-btn-forum" class="w-full text-left px-4 py-2.5 rounded-lg text-base font-medium text-slate-600 hover:bg-slate-50 block">
+                    <i class="fa-solid fa-comments mr-2 text-primary-500"></i> หน้าที่ 3: พื้นที่แลกเปลี่ยน
+                </button>
+                <button onclick="switchTab('solution')" id="mob-btn-solution" class="w-full text-left px-4 py-2.5 rounded-lg text-base font-medium text-slate-600 hover:bg-slate-50 block">
+                    <i class="fa-solid fa-lightbulb mr-2 text-primary-500"></i> หน้าที่ 4: เสนอแนวทางแก้ปัญหา
+                </button>
+                <button onclick="switchTab('evaluation')" id="mob-btn-evaluation" class="w-full text-left px-4 py-2.5 rounded-lg text-base font-medium text-slate-600 hover:bg-slate-50 block">
+                    <i class="fa-solid fa-square-check mr-2 text-primary-500"></i> หน้าที่ 5: การประเมินตนเอง
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: HOME (แนะนำภารกิจและปัญหา) -->
+        <section id="content-home" class="tab-content block space-y-8 animate-fade-in">
+            
+            <!-- Hero banner trigger event -->
+            <div class="bg-gradient-to-r from-slate-900 via-primary-950 to-indigo-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl overflow-hidden relative border border-slate-800">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary-500/20 rounded-full blur-3xl"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 max-w-3xl">
+                    <span class="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-flex items-center gap-1.5 mb-4 animate-pulse">
+                        <i class="fa-solid fa-triangle-exclamation"></i> สถานการณ์วิกฤตเร่งด่วน!
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 leading-tight">
+                        วิกฤตส่ง "กล่องข้าวอุ่นใจ" <br class="hidden sm:inline">ในมหกรรมกีฬาสีที่ใหญ่ที่สุดในรอบทศวรรษ!
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg mb-6 leading-relaxed">
+                        อีกเพียง 2 วันเท่านั้น มหกรรมกีฬาสีของโรงเรียนมัธยมวิทยาจะเริ่มต้นขึ้น นักเรียนกว่า 1,200 คนกระจายตัวไปตาม 4 โซนใหญ่รอบโรงเรียน แต่มีกล่องข้าวกว่า 1,200 กล่องที่ต้องส่งจากโรงอาหารให้ถึงมือเพื่อนๆ ทุกคนในสภาพอุ่นและพร้อมทาน ภายในเวลาจำกัดเพียง 30 นาที! หากล่าช้า ข้าวจะบูดและงานกีฬาสีจะปั่นป่วนทันที!
+                    </p>
+                    <div class="inline-flex items-center gap-2 text-amber-400 font-medium text-sm sm:text-base">
+                        <i class="fa-regular fa-clock text-lg"></i>
+                        <span>เป้าหมายสูงสุด: วางแผนขนส่งที่ไม่มีใครต้องหิวโซ!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trigger Event Story Detailed Card -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-950 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open-reader text-primary-500"></i> เรื่องเล่าสถานการณ์ (Trigger Event)
+                        </h2>
+                        <div class="space-y-4 text-slate-600 leading-relaxed text-sm sm:text-base">
+                            <p>
+                                ณ โรงเรียนมัธยมวิทยา คณะกรรมการนักเรียนกำลังเผชิญกับโจทย์ที่โหดที่สุดในชีวิต 
+                                <strong>นายธีร์</strong> หัวหน้าฝ่ายกิจกรรมหน้าเครียดพลางกุมขมับอยู่หน้าแผนที่โรงเรียน 
+                                <span class="text-slate-900 font-semibold">"เรามีรถเข็นขนอาหารแค่ 3 คัน แต่ต้องส่งข้าวกล่อง 1,200 กล่อง ไปยังจุดบริการ 4 จุดที่มีระยะทางและความต้องการไม่เท่ากันเลย แถมเวลาจำกัดเพียงครึ่งชั่วโมงช่วงพักเที่ยง!"</span>
+                            </p>
+                            <p>
+                                ทางร้านค้าแจ้งว่า ข้าวกล่องบรรจุถังรักษาความร้อนขนาดใหญ่ โดยรถเข็นแต่ละคันมีกำลังคนลากและขนาดบรรจุต่างกัน หากไม่มีระบบคัดแยก จัดแบ่ง และวางเส้นทางวิ่งรถเข็นที่ดี รถจะติดกันระนาวที่ถนนทางเชื่อมแคบ และจะมีนักเรียนบางกลุ่มได้รับอาหารล่าช้าเกินเวลาทำลายความอร่อยและทำลายแผนงานทั้งบ่าย
+                            </p>
+                            <p class="border-l-4 border-amber-500 pl-4 bg-amber-50/70 p-3 rounded-r-lg text-amber-900 text-sm">
+                                "เราจะแก้ปัญหาความปั่นป่วนวุ่นวายระดับโรงเรียนนี้ได้อย่างไร? หากเราไม่ใช้วิธีสุ่มเดา แต่ใช้หลักการวิเคราะห์ระบบอย่างเป็นขั้นตอนเหมือนที่โปรแกรมเมอร์ใช้!"
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-100">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="switchTab('resources')" class="bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-md shadow-primary-500/10">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> เริ่มศึกษาข้อมูลเรียนรู้
+                            </button>
+                            <button onclick="switchTab('solution')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-lightbulb text-amber-500"></i> ดูฟอร์มส่งแนวทางแก้ไข
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student's Mission Card -->
+                <div class="bg-gradient-to-b from-primary-50 to-indigo-50 border border-primary-100 rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
+                            <i class="fa-solid fa-bullseye text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">ภารกิจของคุณ (Mission)</h3>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                            ในฐานะนักวิเคราะห์ระบบระดับ ม.2 คุณต้องประยุกต์ใช้ <strong class="text-primary-600 font-bold">"แนวคิดเชิงคำนวณ" (Computational Thinking)</strong> ทั้ง 4 พิลลาร์ในการแก้ปัญหานี้:
+                        </p>
+                        
+                        <ul class="space-y-3 text-sm text-slate-700 font-medium">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <span>แบ่งแยกปัญหาใหญ่ออกเป็นปัญหาย่อย (Decomposition)</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <span>วิเคราะห์และจับคู่รูปแบบความต้องการ (Pattern Recognition)</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <span>เลือกดึงเฉพาะข้อมูลหลักสำคัญที่จำเป็น (Abstraction)</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <span>ออกแบบเส้นทางและขั้นตอนปฏิบัติให้รถเข็น (Algorithm)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-white/80 rounded-xl border border-primary-200/50">
+                        <span class="text-xs text-slate-500 uppercase font-bold tracking-wider block mb-1">เงื่อนไขและงบประมาณจำกัด</span>
+                        <div class="text-xs text-slate-700 space-y-1">
+                            <div>• ปริมาณข้าวกล่องรวม: <strong class="text-slate-900">1,200 กล่อง</strong></div>
+                            <div>• รถเข็นที่พร้อมใช้งาน: <strong class="text-slate-900">3 คัน (ขนาดเล็ก, กลาง, ใหญ่)</strong></div>
+                            <div>• กรอบงบประมาณปรับแต่งจุดกระจาย: <strong class="text-amber-600 font-bold">ไม่เกิน 5,000 บาท</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Problem-Solving Steps (กระบวนการแก้ปัญหา 5 ขั้นตอน) -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="text-primary-500 text-sm font-semibold tracking-wider uppercase block mb-2">How to Solve It?</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-950">กระบวนการแก้ปัญหา 5 ขั้นตอนสำหรับนักเรียน</h2>
+                    <p class="text-slate-500 text-sm mt-2">ทำตามกระบวนการนี้บนหน้าเว็บเพื่อเคลียร์ภารกิจให้สำเร็จอย่างมีระเบียบแบบแผน</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
+                    <!-- Step 1 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col items-center text-center relative group hover:shadow-md transition duration-200">
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-lg font-bold mb-3 shadow-sm">1</div>
+                        <h4 class="font-bold text-slate-900 mb-1">ตระหนักในปัญหา</h4>
+                        <p class="text-xs text-slate-500">อ่านเรื่องราวจุดประกาย ทำความเข้าใจกรอบเวลา ข้อจำกัด</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col items-center text-center relative group hover:shadow-md transition duration-200">
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-lg font-bold mb-3 shadow-sm">2</div>
+                        <h4 class="font-bold text-slate-900 mb-1">ค้นคว้าเรียนรู้</h4>
+                        <p class="text-xs text-slate-500">ศึกษาทฤษฎีแนวคิดเชิงคำนวณ 4 พิลลาร์ ในแถบ "แหล่งข้อมูลเรียนรู้"</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col items-center text-center relative group hover:shadow-md transition duration-200">
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-lg font-bold mb-3 shadow-sm">3</div>
+                        <h4 class="font-bold text-slate-900 mb-1">ระดมความคิด</h4>
+                        <p class="text-xs text-slate-500">โพสต์แสดงความเห็นร่วมกันเพื่อจัดแบ่งกลุ่มงานในแชทบอร์ด</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col items-center text-center relative group hover:shadow-md transition duration-200">
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-lg font-bold mb-3 shadow-sm">4</div>
+                        <h4 class="font-bold text-slate-900 mb-1">สร้างอัลกอริทึม</h4>
+                        <p class="text-xs text-slate-500">กรอกฟอร์มทดสอบ จัดเส้นทางระบบส่งของคำนวณคะแนนประสิทธิภาพ</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col items-center text-center relative group hover:shadow-md transition duration-200">
+                        <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-lg font-bold mb-3 shadow-sm">5</div>
+                        <h4 class="font-bold text-slate-900 mb-1">ประเมินทบทวน</h4>
+                        <p class="text-xs text-slate-500">ทำแบบประเมินตนเองเพื่อประมวลความเข้าใจในการเรียนรู้</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: RESOURCES (แหล่งข้อมูล/สื่อการเรียนรู้) -->
+        <section id="content-resources" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="text-center max-w-2xl mx-auto mb-6">
+                <span class="text-primary-500 text-sm font-semibold tracking-wider uppercase block">Education Materials</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-950">ห้องสมุดความรู้แนวคิดเชิงคำนวณ</h2>
+                <p class="text-slate-500 text-sm mt-2">ศึกษาทฤษฎีแนวคิดเชิงคำนวณ 4 พิลลาร์ เพื่อนำเครื่องมือเหล่านี้ไปขจัดปัญหากีฬาสีวุ่นวาย</p>
+            </div>
+
+            <!-- Video & Multimedia Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Video Presentation Simulator -->
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100">
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-play text-rose-500 animate-pulse"></i> สื่อการเรียนรู้แอนิเมชันสำหรับ ม.2
+                    </h3>
+                    
+                    <!-- Beautiful Custom Video Player Mockup (Fixes Error 153 by using clean preview UI) -->
+                    <div onclick="window.open('https://youtu.be/SDYi1EDNcVs?si=0b3DovRV73gw4eIE', '_blank')" class="group relative aspect-video w-full rounded-2xl overflow-hidden shadow-lg bg-slate-900 cursor-pointer border border-slate-200 hover:shadow-xl hover:scale-[1.01] transition-all duration-300">
+                        <!-- YouTube Video Thumbnail with Fallback Cover -->
+                        <img 
+                            src="https://img.youtube.com/vi/SDYi1EDNcVs/maxresdefault.jpg" 
+                            onerror="this.src='https://placehold.co/800x450/0f172a/ffffff?text=Computational+Thinking+M.2'"
+                            alt="ภาพปกวิดีโอสื่อการเรียนรู้แนวคิดเชิงคำนวณ" 
+                            class="w-full h-full object-cover opacity-85 group-hover:opacity-75 transition-all duration-300"
+                        >
+                        
+                        <!-- Premium Glassmorphism Video Play UI -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30 flex flex-col justify-between p-4 sm:p-6 text-white">
+                            <!-- Top Badge -->
+                            <div class="flex justify-between items-start">
+                                <span class="bg-rose-600 text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md shadow-rose-600/30">
+                                    <i class="fa-brands fa-youtube text-sm"></i> สื่อหลักประจำวิชา
+                                </span>
+                                <span class="bg-black/60 backdrop-blur-md text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg">
+                                    8:45 นาที
+                                </span>
+                            </div>
+
+                            <!-- Center Pulsing Play Button -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-rose-600 text-white rounded-full flex items-center justify-center shadow-2xl shadow-rose-600/50 transform group-hover:scale-110 transition-all duration-300 relative">
+                                    <!-- Ripple effect circles -->
+                                    <span class="absolute inset-0 rounded-full bg-rose-600 opacity-75 animate-ping"></span>
+                                    <i class="fa-solid fa-play text-2xl sm:text-3xl ml-1 relative z-10"></i>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Control Bar Mockup -->
+                            <div class="w-full space-y-3 z-10">
+                                <div>
+                                    <h4 class="font-bold text-sm sm:text-base leading-tight drop-shadow group-hover:text-rose-400 transition-colors">
+                                        วิทยาการคำนวณ ม.2 - แนวคิดเชิงคำนวณ (Computational Thinking)
+                                    </h4>
+                                    <p class="text-[10px] sm:text-xs text-slate-300 mt-1">คลิกที่นี่เพื่อเริ่มเล่นวิดีโอในหน้าต่างใหม่ (แก้ไขปัญหาเบราว์เซอร์บล็อกวิดีโอ)</p>
+                                </div>
+                                <!-- Simulated video player timeline -->
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-grow h-1 bg-white/30 rounded-full overflow-hidden">
+                                        <div class="w-1/3 h-full bg-rose-500 rounded-full"></div>
+                                    </div>
+                                    <span class="text-[10px] sm:text-xs font-mono text-slate-200">02:45 / 08:45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subtle Informative Safe Guide Links -->
+                    <div class="mt-4 p-4 bg-slate-50 border border-slate-200/80 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-700">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span>รับรองการเล่นไฟล์วิดีโออย่างเป็นทางการ ปลอดภัยจากปัญหา Error 100%</span>
+                        </div>
+                        <a href="https://youtu.be/SDYi1EDNcVs?si=0b3DovRV73gw4eIE" target="_blank" class="text-rose-600 font-bold hover:underline inline-flex items-center gap-1">
+                            เปิดลิงก์สำรองบน YouTube <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Summary Document Card -->
+                <div class="bg-gradient-to-b from-indigo-950 to-slate-950 text-white rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md text-xs font-semibold mb-4">
+                            <i class="fa-solid fa-file-pdf"></i> เอกสารสรุปชีทเด็ด
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">สรุปด่วน 4 พิลลาร์สู้น้ำท่วม/ส่งข้าว</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            เอกสารสรุปสั้นกระชับสำหรับใช้เป็นคู่มือวิเคราะห์เส้นทาง สำหรับแก้ปัญหา logistics ภายในโรงเรียนมัธยมศึกษาปีที่ 2
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center"><i class="fa-solid fa-list-check text-amber-400"></i></div>
+                                <div>
+                                    <h4 class="text-xs font-bold">1. Decomposition (ย่อยปัญหา)</h4>
+                                    <p class="text-[11px] text-slate-400">แบ่งงานจาก 1200 กล่อง ออกเป็นโซนและขนาดรถเข็น</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center"><i class="fa-solid fa-magnifying-glass-chart text-sky-400"></i></div>
+                                <div>
+                                    <h4 class="text-xs font-bold">2. Pattern Recognition (จับรูปแบบ)</h4>
+                                    <p class="text-[11px] text-slate-400">หารอบความเร็วรถลากต่อวินาที และปริมาณความจุ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="downloadMockPDF()" class="mt-6 w-full bg-white text-slate-900 hover:bg-slate-100 font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download text-primary-600"></i> ดาวน์โหลดเอกสารสรุป (.PDF)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Explanation Cards for Computational Thinking Concept -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-4 font-bold text-lg border border-rose-100">D</div>
+                    <h4 class="font-bold text-slate-900 mb-2">1. การย่อยปัญหา (Decomposition)</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        การแบ่งแยกปัญหาใหญ่ออกเป็นปัญหาที่เล็กลง เพื่อให้จัดการง่ายขึ้น ตัวอย่างในปัญหานี้คือ การแบ่งภารกิจใหญ่ 1,200 กล่อง ออกเป็นตามจำนวนกล่องข้าวแต่ละกลุ่มสีของแต่ละจุดจอดส่ง
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-4 font-bold text-lg border border-amber-100">P</div>
+                    <h4 class="font-bold text-slate-900 mb-2">2. การหารูปแบบ (Pattern Recognition)</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        การสังเกต ค้นหาสิ่งที่มีความคล้ายคลึงกัน เพื่อหาวิธีแก้ไขที่ปรับเปลี่ยนได้ ตัวอย่างคือ ระยะทางของเส้นทางและจำนวนเที่ยวที่รถเข็นแต่ละขนาดต้องวิ่งไปส่งเพื่อให้เกิดประสิทธิภาพสูงสุด
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-10 h-10 bg-sky-50 text-sky-500 rounded-xl flex items-center justify-center mb-4 font-bold text-lg border border-sky-100">A</div>
+                    <h4 class="font-bold text-slate-900 mb-2">3. คิดเชิงนามธรรม (Abstraction)</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        การกรองข้อมูลที่ไม่จำเป็นออก เหลือเพียงแก่นสำคัญ เช่น เมนูอาหารกล่อง รูปร่างของคนดึงรถ หรือยี่ห้อรถเข็นไม่ต้องสนใจ สนใจเพียงปริมาณบรรจุที่รับได้ และระยะเวลาขนส่งเท่านั้น
+                    </p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center mb-4 font-bold text-lg border border-emerald-100">A</div>
+                    <h4 class="font-bold text-slate-900 mb-2">4. ออกแบบอัลกอริทึม (Algorithm)</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        การเขียนลำดับขั้นตอนทีละขั้นตอนที่ชัดเจน ให้ผู้อื่นสามารถนำไปปฏิบัติตามเพื่อให้ได้ผลลัพธ์ที่ถูกต้องตรงกันทุกรอบ เช่น กำหนดลำดับก่อนหลังและเป้าหมายของแต่ละรอบวิ่งอย่างรอบคอบ
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: DISCUSSION FORUM (พื้นที่แลกเปลี่ยนความคิดเห็น) -->
+        <section id="content-forum" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Forum Input Space -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 h-fit">
+                    <div class="mb-6">
+                        <span class="text-primary-500 text-sm font-semibold block mb-1">Collaboration Forum</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-950">มาระดมความคิดเห็นกันเถอะ!</h2>
+                        <p class="text-slate-500 text-xs mt-1 leading-relaxed">
+                            ขั้นตอนที่ 3 ในกระบวนการ PBL: ช่วยกันโพสต์แสดงมุมมองว่าโรงเรียนเราควรจัดสรรกำลังลากและจัดการคัดแยกขยะ/กล่องอย่างไรให้ไวที่สุด
+                        </p>
+                    </div>
+
+                    <form id="forum-form" onsubmit="handlePostSubmit(event)" class="space-y-4">
+                        <div>
+                            <label for="forum-name" class="block text-xs font-bold text-slate-700 uppercase mb-1.5">ชื่อเล่น / รหัสนักเรียน</label>
+                            <input type="text" id="forum-name" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-slate-800 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="เช่น เด็กชายพชร (ม.2/3)">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">เลือกอวตาร์ของคุณ</label>
+                            <div class="flex items-center gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="avatar" value="avatar-blue" checked class="sr-only peer">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center border-2 border-transparent peer-checked:border-blue-500 hover:scale-105 transition"><i class="fa-solid fa-graduation-cap"></i></div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="avatar" value="avatar-amber" class="sr-only peer">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center border-2 border-transparent peer-checked:border-amber-500 hover:scale-105 transition"><i class="fa-solid fa-palette"></i></div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="avatar" value="avatar-rose" class="sr-only peer">
+                                    <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center border-2 border-transparent peer-checked:border-rose-500 hover:scale-105 transition"><i class="fa-solid fa-gamepad"></i></div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="avatar" value="avatar-emerald" class="sr-only peer">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center border-2 border-transparent peer-checked:border-emerald-500 hover:scale-105 transition"><i class="fa-solid fa-flask"></i></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="forum-comment" class="block text-xs font-bold text-slate-700 uppercase mb-1.5">ข้อเสนอแนะหรือไอเดียคร่าวๆ</label>
+                            <textarea id="forum-comment" rows="4" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-slate-800 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none" placeholder="บอกแนวทาง เช่น 'หนูคิดว่าต้องแบ่งรถเข็นคันใหญ่สุดไปส่งสีฟ้าที่มีคนเยอะสุดก่อนเป็นลำดับแรก เพื่อไม่ให้คิวยาว...'"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-md shadow-primary-500/10">
+                            <i class="fa-regular fa-paper-plane"></i> ส่งความเห็นเข้าร่วมบอร์ด
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Live Discussion Feed -->
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+                            <h3 class="text-lg font-bold text-slate-900">การสนทนาของกลุ่มเพื่อนแบบเรียลไทม์</h3>
+                        </div>
+                        <span id="forum-post-count" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">3 ความคิดเห็น</span>
+                    </div>
+
+                    <!-- Forum Posts List -->
+                    <div id="forum-posts-container" class="space-y-4 max-h-[480px] overflow-y-auto pr-1">
+                        <!-- Initial Post 1 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100/80">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-slate-900 text-sm">เจมส์ (ม.2/1)</span>
+                                        <span class="text-[10px] text-slate-400">10 นาทีที่แล้ว</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                        ผมคิดว่าเรื่องการลากรถเข็น เราต้องนำหลักการ <strong class="text-primary-600">Decomposition</strong> มาใช้ โดยหาจำนวนกล่องข้าวเฉลี่ยของทั้ง 4 สี เพื่อให้แน่ใจว่าแต่ละสีควรได้รอบวิ่งจากรถเข็นคันใดกันแน่ครับ
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Initial Post 2 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100/80">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-gamepad"></i></div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-slate-900 text-sm">พิมมี่ (ม.2/4)</span>
+                                        <span class="text-[10px] text-slate-400">2 ชั่วโมงที่แล้ว</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                        จากที่เราได้เรียนเรื่อง <strong class="text-primary-600">Abstraction</strong> เราไม่ต้องไปนึกถึงหน้าคนส่งหรอกค่ะ โฟกัสไปที่ขนาดปริมาตรรถเข็นกับเวลาเดินทางบนแผนที่อย่างเดียวเลย
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Initial Post 3 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100/80">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-flask"></i></div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-slate-900 text-sm">ทอมมี่ (ม.2/2)</span>
+                                        <span class="text-[10px] text-slate-400">3 ชั่วโมงที่แล้ว</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                        ถ้าจัดเป็นขั้นตอนลำดับวิ่งเช่น รอบแรก 12.00 น. รอบสอง 12.15 น. น่าจะเคลียร์ข้าวทั้ง 1,200 กล่องทันเวลานะครับ เดี๋ยวลองเข้าไปกรอกในฟอร์มเสนอแนวทางเพื่อจำลองประสิทธิภาพดีกว่า!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SOLUTION PROPOSAL FORM (แบบฟอร์มเสนอแนวทางแก้ปัญหา) -->
+        <section id="content-solution" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="text-center max-w-2xl mx-auto mb-6">
+                <span class="text-primary-500 text-sm font-semibold tracking-wider uppercase block">Solution Designer</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-950">ส่งแผนสู้ภัยจัดระเบียบขนส่งกล่องข้าว</h2>
+                <p class="text-slate-500 text-sm mt-2">ระบุแนวทางที่ถอดรหัสออกมาเป็น 4 หลักการ และเลือกแผนส่งจำลองเพื่อประมวลความเร็วรถลาก!</p>
+            </div>
+
+            <!-- Main Layout Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Inputs Section (Left column 3 parts) -->
+                <form id="solution-form" onsubmit="calculateSimulation(event)" class="lg:col-span-3 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 space-y-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square text-primary-500"></i> อธิบายแนวคิดเชิงคำนวณของคุณ
+                        </h3>
+                        <p class="text-slate-500 text-xs mb-4">โปรดตอบคำถามสั้นๆ เพื่อพิสูจน์ความเข้าใจทางทฤษฎี</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">1. การย่อยปัญหา (Decomposition):</label>
+                                <textarea required class="w-full px-4 py-2 rounded-xl border border-slate-200 text-slate-800 text-xs focus:ring-1 focus:ring-primary-500 outline-none resize-none" rows="2" placeholder="ตัวอย่าง: แยกโจทย์กล่องข้าวออกเป็นกลุ่มสี แดง (300 กล่อง), เขียว (400 กล่อง), เหลือง (200 กล่อง), และฟ้า (300 กล่อง)"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">2. การคิดเชิงนามธรรม (Abstraction):</label>
+                                <textarea required class="w-full px-4 py-2 rounded-xl border border-slate-200 text-slate-800 text-xs focus:ring-1 focus:ring-primary-500 outline-none resize-none" rows="2" placeholder="ตัวอย่าง: คัดทิ้งส่วนประดับธงสี และน้ำหนักรถเข็นขณะไม่มีกล่องข้าว เพื่อโฟกัสเพียงเวลารถเคลื่อนที่และพิกัดจุดรับส่ง"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-6">
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-amber-500"></i> เลือกตั้งค่าพารามิเตอร์การขนส่ง
+                        </h3>
+                        <p class="text-slate-500 text-xs mb-4">ปรับการจัดการจัดสรรงบไม่เกิน 5,000 บาท และเลือกรถเข็น</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Dropdown selection -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">แผนจัดซื้อล้อยางรับน้ำหนักแรงต่ำ (งบประมาณ 5,000 บาท)</label>
+                                <select id="plan-upgrade" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-slate-800 text-xs focus:ring-1 focus:ring-primary-500 outline-none">
+                                    <option value="none">ไม่ใช้การอัปเกรด (จ่าย 0 บาท - รถเข็นวิ่งความเร็วปกติ)</option>
+                                    <option value="wheel">ซื้อล้อยางลดแรงเสียดทาน (จ่าย 2,500 บาท - เพิ่มความเร็วรถเข็น 20%)</option>
+                                    <option value="smart">ซื้อระบบ GPS และเซ็นเซอร์แจ้งเตือน (จ่าย 4,500 บาท - ป้องกันเวลาหลงทางและเสียเวลาได้ดีเยี่ยม)</option>
+                                    <option value="luxury">หรูหรา: จ้างคนเพิ่มด่วนพร้อมล้อพิเศษ (จ่าย 6,000 บาท - เกินงบที่กำหนด!)</option>
+                                </select>
+                            </div>
+
+                            <!-- Cart Allocation Strategy -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">จัดกำลังรถเข็นลุยเส้นทางหลัก</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <label class="border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition peer">
+                                        <input type="radio" name="cart-alloc" value="speed" checked class="mb-1.5">
+                                        <span class="text-xs font-bold text-slate-900">เน้นใช้รถเล็ก (วิ่งไว)</span>
+                                        <span class="text-[9px] text-slate-400">ส่งหลายเที่ยว</span>
+                                    </label>
+                                    <label class="border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition">
+                                        <input type="radio" name="cart-alloc" value="capacity" class="mb-1.5">
+                                        <span class="text-xs font-bold text-slate-900">เน้นรถใหญ่ (จุเยอะ)</span>
+                                        <span class="text-[9px] text-slate-400">วิ่งรอบเดียวเต็มที่</span>
+                                    </label>
+                                    <label class="border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition">
+                                        <input type="radio" name="cart-alloc" value="balanced" class="mb-1.5">
+                                        <span class="text-xs font-bold text-slate-900">เกลี่ยความสมดุล</span>
+                                        <span class="text-[9px] text-slate-400">เฉลี่ยอย่างระเบียบ</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/15">
+                        <i class="fa-solid fa-circle-play"></i> รันระบบจำลองผล (Simulate Solution)
+                    </button>
+                </form>
+
+                <!-- Dynamic Simulation Result Display Panel (Right 2 parts) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col h-full justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-emerald-500"></i> แดชบอร์ดตรวจสอบระบบจำลอง
+                            </h3>
+                            <p class="text-slate-500 text-xs mb-4">ผลลัพธ์การประมวลความสำเร็จของระบบที่คุณออกแบบ</p>
+                            
+                            <!-- Main score circle indicator -->
+                            <div class="my-6 flex flex-col items-center justify-center">
+                                <div class="w-32 h-32 rounded-full border-8 border-slate-100 flex flex-col items-center justify-center relative bg-slate-50" id="score-circle">
+                                    <span id="sim-score" class="text-3xl font-extrabold text-slate-400">--</span>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">คะแนนรวม</span>
+                                </div>
+                            </div>
+
+                            <!-- Detail diagnostics list -->
+                            <div class="space-y-3 pt-4 border-t border-slate-100">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500">สถานะงบประมาณ:</span>
+                                    <span id="diag-budget" class="font-bold text-slate-900">-</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500">เวลาส่งอาหารเฉลี่ย:</span>
+                                    <span id="diag-time" class="font-bold text-slate-900">-</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500">ความอุ่นอุ่นใจของกล่องข้าว:</span>
+                                    <span id="diag-heat" class="font-bold text-slate-900">-</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-500">ระดับการติดขัดของเส้นทาง:</span>
+                                    <span id="diag-traffic" class="font-bold text-slate-900">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sim-feedback-box" class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200 text-center text-xs text-slate-500">
+                            ยังไม่มีการรันระบบ กรุณากรอกแผนแก้ปัญหาและกด "รันระบบจำลองผล" ข้างต้นเพื่อดูประสิทธิภาพ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: SELF-EVALUATION & RUBRIC (การประเมินผลตนเองและเกณฑ์การประเมิน) -->
+        <section id="content-evaluation" class="tab-content hidden space-y-8 animate-fade-in">
+            <!-- Learning Rubric Evaluation Standard Panel -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100">
+                <div class="mb-6">
+                    <span class="text-primary-500 text-sm font-semibold block mb-1">Assessment Rubrics</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-950">เกณฑ์การให้คะแนนผลงานและการแก้ปัญหา (Rubrics)</h2>
+                    <p class="text-slate-500 text-xs mt-1">ใช้ประเมินตนเองตามสภาพจริง เพื่อทบทวนระดับสมรรถนะการเรียนรู้วิทยาการคำนวณ</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-bold">
+                                <th class="p-4 rounded-tl-xl">หัวข้อการประเมิน</th>
+                                <th class="p-4">ดีมาก (3 คะแนน)</th>
+                                <th class="p-4">พอใช้ (2 คะแนน)</th>
+                                <th class="p-4 rounded-tr-xl">ปรับปรุง (1 คะแนน)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">1. การใช้แนวคิดย่อยปัญหา (Decomposition)</td>
+                                <td class="p-4">สามารถแจกแจงจำนวนกล่องข้าว ตำแหน่งสี ระยะทาง และขนาดรถได้อย่างเหมาะสมและชัดเจน</td>
+                                <td class="p-4">แจกแจงรายละเอียดและระบุปัญหาหลักได้ แต่ระบุความสามารถรถเข็นบางจุดไม่ครบถ้วน</td>
+                                <td class="p-4">ไม่ได้แจกแจงแยกย่อยปัญหา โฟกัสแต่เพียงตัวแปรที่ผิดจุดเดาแบบสุ่มความสำเร็จ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">2. การสกัดแนวคิดเชิงนามธรรม (Abstraction)</td>
+                                <td class="p-4">ตัดข้อมูลรบกวนภายนอก เช่น ยี่ห้อรถ ชื่อผู้ส่ง และโฟกัสเฉพาะเวลาคณิตศาสตร์ความเร็วได้อย่างแม่นยำ</td>
+                                <td class="p-4">ยังหลงเหลือและจดจำเรื่องไม่จำเป็น เช่น การตระเตรียมน้ำเครื่องปรุง คัดแยกช้าบ้างเล็กน้อย</td>
+                                <td class="p-4">ไม่ระบุข้อมูลแก่นสำคัญ นำปัญหาแวดล้อมมาผสมรวมทำให้ยากลำบาก</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">3. การออกแบบขั้นตอนวิธี (Algorithm)</td>
+                                <td class="p-4">สร้างเส้นทาง จัดตารางเดินรถก่อนหลังเป็นระบบ แผนจำลองประสิทธิภาพผ่านเกณฑ์เกือบสูงสุด</td>
+                                <td class="p-4">สร้างขั้นตอนการส่งของได้ แต่รถเข็นชนกันบ่อยทำให้เกิดจราจรคอขวดเป็นจุดๆ</td>
+                                <td class="p-4">ระบุวิธีแก้ปัญหาเป็นภาพกว้างไร้ระเบียบ ไม่มีลำดับรอบเวลาทำให้ของบูดเสียก่อน</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Interactive Checklist for Student Self-Grading -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-100 max-w-3xl mx-auto">
+                <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-500"></i> แบบเช็คลิสต์และให้คะแนนตนเองแบบเรียลไทม์
+                </h3>
+                <p class="text-slate-500 text-xs mb-6">กรุณาเช็คหัวข้อตามความเป็นจริงเพื่อคำนวณระดับเกรดการเรียนรู้ในวิชานี้!</p>
+
+                <div class="space-y-4">
+                    <!-- Criteria Item 1 -->
+                    <div class="p-4 rounded-xl border border-slate-100/80 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">ฉันได้แบ่งปัญหาออกเป็นสัดส่วนชัดเจนตามประเภทสี</span>
+                            <span class="text-[11px] text-slate-500">แสดงถึงการใช้กระบวนการคิด Decomposition</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="setSelfScore(1, 3, this)" class="score-btn-1 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">3 (ดีมาก)</button>
+                            <button onclick="setSelfScore(1, 2, this)" class="score-btn-1 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">2 (พอใช้)</button>
+                            <button onclick="setSelfScore(1, 1, this)" class="score-btn-1 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">1 (ปรับปรุง)</button>
+                        </div>
+                    </div>
+
+                    <!-- Criteria Item 2 -->
+                    <div class="p-4 rounded-xl border border-slate-100/80 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">ฉันคัดข้อมูลที่ไม่จำเป็นและวิเคราะห์ความเร็วโดยแท้จริง</span>
+                            <span class="text-[11px] text-slate-500">แสดงถึงการใช้องค์ประกอบ Abstraction ในแผนงาน</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="setSelfScore(2, 3, this)" class="score-btn-2 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">3 (ดีมาก)</button>
+                            <button onclick="setSelfScore(2, 2, this)" class="score-btn-2 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">2 (พอใช้)</button>
+                            <button onclick="setSelfScore(2, 1, this)" class="score-btn-2 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">1 (ปรับปรุง)</button>
+                        </div>
+                    </div>
+
+                    <!-- Criteria Item 3 -->
+                    <div class="p-4 rounded-xl border border-slate-100/80 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">ฉันสรุปเขียนขั้นตอนรันลำดับเวลาแก้ปัญหาออกมาทีละขั้นได้</span>
+                            <span class="text-[11px] text-slate-500">แสดงถึงการใช้กระบวนการเขียน Algorithm</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="setSelfScore(3, 3, this)" class="score-btn-3 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">3 (ดีมาก)</button>
+                            <button onclick="setSelfScore(3, 2, this)" class="score-btn-3 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">2 (พอใช้)</button>
+                            <button onclick="setSelfScore(3, 1, this)" class="score-btn-3 border border-slate-300 hover:border-indigo-500 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">1 (ปรับปรุง)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculate Total Score & Show badge -->
+                <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <span class="text-xs text-slate-400 font-bold block">ระดับประเมินตนเองของคุณ</span>
+                        <span id="final-rating" class="text-lg font-bold text-slate-800">ยังประเมินไม่เสร็จสิ้น</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-500">รวมคะแนนของคุณ:</span>
+                        <div class="px-5 py-2.5 bg-indigo-50 text-indigo-700 rounded-xl font-extrabold text-xl border border-indigo-100" id="total-self-score">0 / 9</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p>ออกแบบโดยนักพัฒนาเว็บและผู้เชี่ยวชาญการศึกษา มหาวิทยาลัยมัธยมวิทยา เพื่อใช้ในการสอนกระบวนการ Computational Thinking ม.2</p>
+            <p class="text-slate-600">&copy; 2026 สงวนลิขสิทธิ์ทางการศึกษา. สร้างด้วย Tailwind CSS และ HTML5 แบบตอบสนองทุกหน้าจอ</p>
+        </div>
+    </footer>
+
+    <!-- Custom Toast Notification Box (Avoid using Alert) -->
+    <div id="toast-msg" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white text-xs font-medium py-3 px-5 rounded-xl shadow-lg border border-slate-800 flex items-center gap-2">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+        <span id="toast-text">ข้อความพุชความสำเร็จ!</span>
+    </div>
+
+    <script>
+        // Global variables state storage
+        let selfScores = { 1: 0, 2: 0, 3: 0 };
+
+        // Simple Routing Tabs Controller function
+        function switchTab(tabId) {
+            // Hide all tab views
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            // Show target active tab view
+            const activeContent = document.getElementById(`content-${tabId}`);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+
+            // Un-active all navigation desktop and mobile buttons
+            const navButtons = document.querySelectorAll('.tab-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab');
+                btn.classList.add('text-slate-600', 'hover:text-slate-900');
+            });
+
+            // Set active desktop button styling
+            const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (targetBtn) {
+                targetBtn.classList.add('active-tab');
+                targetBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
+            }
+
+            // Sync Mobile buttons styling dynamically
+            const mobButtons = {
+                'home': document.getElementById('mob-btn-home'),
+                'resources': document.getElementById('mob-btn-resources'),
+                'forum': document.getElementById('mob-btn-forum'),
+                'solution': document.getElementById('mob-btn-solution'),
+                'evaluation': document.getElementById('mob-btn-evaluation')
+            };
+
+            for (let key in mobButtons) {
+                if (mobButtons[key]) {
+                    if (key === tabId) {
+                        mobButtons[key].classList.add('bg-primary-500', 'text-white');
+                        mobButtons[key].classList.remove('text-slate-600', 'hover:bg-slate-50');
+                    } else {
+                        mobButtons[key].classList.remove('bg-primary-500', 'text-white');
+                        mobButtons[key].classList.add('text-slate-600', 'hover:bg-slate-50');
+                    }
+                }
+            }
+
+            // Auto Close Mobile Menu when user tap/click routing
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.add('hidden');
+            
+            // Scroll to top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggling
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        // Simulated Toast custom feedback (Replaces alert)
+        function showToast(text, type = 'success') {
+            const toast = document.getElementById('toast-msg');
+            const icon = document.getElementById('toast-icon');
+            const textEl = document.getElementById('toast-text');
+
+            textEl.innerText = text;
+            
+            if (type === 'error') {
+                icon.className = "fa-solid fa-triangle-exclamation text-rose-500 text-sm";
+            } else {
+                icon.className = "fa-solid fa-circle-check text-emerald-500 text-sm";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        // Multimedia Play Video Simulator
+        function playSimulatedVideo(button) {
+            showToast("กำลังเริ่มเล่นวิดีโอเพื่อการศึกษา 'แนวคิดเชิงคำนวณ ม.2' ของคุณ!");
+            // Re-label to playing state UI representation
+            button.innerHTML = '<i class="fa-solid fa-circle-notch text-2xl animate-spin"></i>';
+            setTimeout(() => {
+                button.innerHTML = '<i class="fa-solid fa-pause text-2xl"></i>';
+                showToast("จำลองเล่นสื่อแอนิเมชันเสร็จสิ้น ขอบคุณที่ตั้งใจฟัง!");
+            }, 2500);
+        }
+
+        // Mock download PDF event
+        function downloadMockPDF() {
+            showToast("กำลังเตรียมดาวน์โหลดแผนสรุปความรู้วิทยาการคำนวณ ม.2...");
+            setTimeout(() => {
+                showToast("จำลองดาวน์โหลดสำเร็จไฟล์ 'Computational_Thinking_M2.pdf'!", "success");
+            }, 1000);
+        }
+
+        // Form post submit controller logic
+        function handlePostSubmit(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('forum-name');
+            const commentInput = document.getElementById('forum-comment');
+            const avatarSelected = document.querySelector('input[name="avatar"]:checked').value;
+
+            if (!nameInput.value.trim() || !commentInput.value.trim()) {
+                showToast("กรุณากรอกข้อมูลให้ครบถ้วนในช่องแสดงความคิดเห็น", "error");
+                return;
+            }
+
+            // Setup avatar styling icon
+            let avatarClass = "bg-blue-100 text-blue-600";
+            let iconClass = "fa-solid fa-graduation-cap";
+
+            if (avatarSelected === 'avatar-amber') {
+                avatarClass = "bg-amber-100 text-amber-600";
+                iconClass = "fa-solid fa-palette";
+            } else if (avatarSelected === 'avatar-rose') {
+                avatarClass = "bg-rose-100 text-rose-600";
+                iconClass = "fa-solid fa-gamepad";
+            } else if (avatarSelected === 'avatar-emerald') {
+                avatarClass = "bg-emerald-100 text-emerald-600";
+                iconClass = "fa-solid fa-flask";
+            }
+
+            // Create mockup new element
+            const listContainer = document.getElementById('forum-posts-container');
+            const postWrapper = document.createElement('div');
+            postWrapper.className = "p-4 bg-slate-50 rounded-xl border border-slate-100/80 animate-fade-in";
+            postWrapper.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-full ${avatarClass} flex items-center justify-center text-sm flex-shrink-0"><i class="${iconClass}"></i></div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-900 text-sm">${nameInput.value}</span>
+                            <span class="text-[10px] text-emerald-500 font-bold">เพิ่งโพสต์</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">${commentInput.value}</p>
+                    </div>
+                </div>
+            `;
+
+            // Insert on top stack
+            listContainer.insertBefore(postWrapper, listContainer.firstChild);
+
+            // Toast success & clear fields
+            showToast("โพสต์ระดมความคิดสำเร็จแล้ว! ข้อมูลแชร์ลงระบบชั้นเรียน ม.2");
+            commentInput.value = "";
+            nameInput.value = "";
+
+            // Update posts counts label
+            const totalCount = listContainer.children.length;
+            document.getElementById('forum-post-count').innerText = `${totalCount} ความคิดเห็น`;
+        }
+
+        // Form calculation for simulated algorithm solutions
+        function calculateSimulation(event) {
+            event.preventDefault();
+
+            const upgradePlan = document.getElementById('plan-upgrade').value;
+            const strategy = document.querySelector('input[name="cart-alloc"]:checked').value;
+
+            // Score and indicators baseline logic 
+            let baseScore = 65;
+            let timeMin = "42 นาที (เกินขอบเขต)";
+            let heatRating = "ต่ำ (อาหารเริ่มเย็นเฉียบ)";
+            let trafficLevel = "หนาแน่นสูง (รถติดทางแคบ)";
+            let budgetStatus = "ผ่านเกณฑ์ดีมาก (เหลือ 5,000)";
+
+            // Check budget luxury trap constraint
+            if (upgradePlan === 'luxury') {
+                baseScore = 40;
+                timeMin = "22 นาที (ไวมาก)";
+                heatRating = "ดีมาก (ร้อนอุ่น)";
+                trafficLevel = "ราบรื่นไม่มีที่ติ";
+                budgetStatus = "งบประมาณติดลบ! (เกิน 5,000)";
+                
+                // Set styling score UI border negative warning colors
+                updateScoreBox(baseScore, "#ef4444", "งบติดลบโปรดระวังเงื่อนไข!");
+                setDiagnoseFields(budgetStatus, timeMin, heatRating, trafficLevel);
+                showToast("คำเตือน: งบประมาณจัดทำปรับแก้สูงเกิน 5,000 บาท ขัดแย้งเงื่อนไข!", "error");
+                return;
+            }
+
+            // Main safe scenario variations calculations
+            if (upgradePlan === 'wheel') {
+                baseScore += 15; // 80
+                budgetStatus = "ดี (ใช้งบ 2,500 บาท)";
+                timeMin = "29 นาที (ผ่านฉิวเฉียด!)";
+                heatRating = "กลางๆ (เกือบร้อน)";
+                trafficLevel = "หนาแน่นปานกลาง";
+            } else if (upgradePlan === 'smart') {
+                baseScore += 25; // 90
+                budgetStatus = "สมบูรณ์ (ใช้งบ 4,500 บาท)";
+                timeMin = "24 นาที (ยอดเยี่ยมมาก)";
+                heatRating = "ดีเยี่ยม (ร้อนกรุ่นอุ่นใจ)";
+                trafficLevel = "คล่องตัวปลอดภัย";
+            } else {
+                // none
+                budgetStatus = "ประหยัด (เหลือเต็ม 5,000)";
+            }
+
+            // Adjust strategy multiplier details
+            if (strategy === 'balanced') {
+                baseScore += 8;
+                trafficLevel = "ราบรื่นยอดเยี่ยม";
+            } else if (strategy === 'capacity') {
+                baseScore -= 5;
+                trafficLevel = "แออัดคอขวดจุดเลี้ยว";
+                timeMin = "34 นาที (ช้ากว่าเวลาพัก)";
+            } else {
+                // Speed allocation run
+                baseScore += 3;
+                timeMin = "27 นาที";
+            }
+
+            // Ensure scores within 100 limit boundary
+            if (baseScore > 100) baseScore = 100;
+            if (baseScore < 0) baseScore = 0;
+
+            // Update UI graphics scores
+            let circleColor = "#10b981"; // emerald
+            let feedbackStr = "";
+
+            if (baseScore >= 80) {
+                circleColor = "#10b981"; // green
+                feedbackStr = `🎉 ยอดเยี่ยมมาก! แนวทางคิดเชิงคำนวณและจัดสรรเวลาของคุณผ่านเกณฑ์ประสิทธิภาพสูงสุด ทุกห้องได้รับกล่องข้าวอุ่นรสชาติอร่อยตรงกำหนด`;
+            } else if (baseScore >= 60) {
+                circleColor = "#f59e0b"; // yellow orange
+                feedbackStr = `👍 ผ่านเกณฑ์ปานกลาง! แผนขนส่งเกือบสมบูรณ์ แต่หากล้อยางเสียดทานหรือจัดเกลี่ยรถเพิ่มเติมจะลดเวลาคอขวดจราจรได้เร็วขึ้นไปอีก`;
+            } else {
+                circleColor = "#ef4444"; // red
+                feedbackStr = `❌ จำลองล้มเหลว! การส่งอาหารล่าช้าเกิน 30 นาที และรถติดรบกวนจราจรหลัก กรุณาปรับเปลี่ยนแผนอัปเกรดเพื่อเร่งรอบประสิทธิภาพ`;
+            }
+
+            updateScoreBox(baseScore, circleColor, feedbackStr);
+            setDiagnoseFields(budgetStatus, timeMin, heatRating, trafficLevel);
+            showToast("ประมวลจำลองอัลกอริทึมขนส่งสำเร็จเรียบร้อย!");
+        }
+
+        function updateScoreBox(score, colorHex, feedbackText) {
+            const circle = document.getElementById('score-circle');
+            const scoreLabel = document.getElementById('sim-score');
+            const feedbackBox = document.getElementById('sim-feedback-box');
+
+            scoreLabel.innerText = score;
+            scoreLabel.style.color = colorHex;
+            circle.style.borderColor = colorHex;
+
+            feedbackBox.className = `mt-6 p-4 rounded-xl border text-xs leading-relaxed font-medium transition duration-300`;
+            if (score >= 80) {
+                feedbackBox.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+            } else if (score >= 60) {
+                feedbackBox.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-900');
+            } else {
+                feedbackBox.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+            }
+            feedbackBox.innerText = feedbackText;
+        }
+
+        function setDiagnoseFields(budget, time, heat, traffic) {
+            document.getElementById('diag-budget').innerText = budget;
+            document.getElementById('diag-time').innerText = time;
+            document.getElementById('diag-heat').innerText = heat;
+            document.getElementById('diag-traffic').innerText = traffic;
+        }
+
+        // Live grading scorecard calculator
+        function setSelfScore(criteriaNum, score, element) {
+            // Un-active sibling score-btn buttons in current line category group
+            const buttons = document.querySelectorAll(`.score-btn-${criteriaNum}`);
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-300');
+            });
+
+            // Set current active clicked styling UI state
+            element.classList.remove('bg-white', 'text-slate-600', 'border-slate-300');
+            element.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+
+            // Save variables score
+            selfScores[criteriaNum] = score;
+
+            // Recalculate Sum score total metrics
+            const sum = selfScores[1] + selfScores[2] + selfScores[3];
+            document.getElementById('total-self-score').innerText = `${sum} / 9`;
+
+            // Display ratings message feedback text
+            let descRating = "เริ่มเลือกคะแนนเพื่อประมวลคำตอบ";
+            if (sum >= 8) {
+                descRating = "🏆 ระดับดีเยี่ยม (คุณเข้าใจแนวคิดเชิงคำนวณอย่างกระจ่างและแก้โจทย์ Logistics ได้คล่อง)";
+            } else if (sum >= 5) {
+                descRating = "✨ ระดับปานกลางพอใช้ (เข้าใจหลักเกณฑ์ แต่ต้องปรับปรุงในส่วนจัดระบบลำดับขั้นตอนเขียนโปรแกรมเล็กน้อย)";
+            } else {
+                descRating = "💡 ระดับปรับปรุง (แนะนำให้ลองย้อนกลับไปดูวิดีโออธิบายความเข้าใจในห้องข้อมูลศึกษาเพิ่มขึ้นอีกครั้ง)";
+            }
+
+            document.getElementById('final-rating').innerText = descRating;
+            showToast("อัปเดตแบบประเมินตนเองแล้ว!");
+        }
+
+        // Initialize state view triggers on Window Load 
+        window.onload = function() {
+            switchTab('home');
+        };
+    </script>
+</body>
+</html>
